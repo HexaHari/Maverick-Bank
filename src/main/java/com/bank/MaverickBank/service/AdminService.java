@@ -74,7 +74,7 @@ public class AdminService {
 
     public void updateUser(Long userId, UserUpdateDto dto, Principal principal) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User Id is invalid"));
         boolean isSelf = user.getUsername().equals(principal.getName());
 
         if (dto.password() != null) {
@@ -88,7 +88,7 @@ public class AdminService {
         }
         if (dto.isActive() != null) {
             if (isSelf) {
-                throw new RuntimeException("ADMIN active status cannot be set a false");
+                throw new OutOfReachException("ADMIN active status cannot be changed");
             }
             user.setActive(dto.isActive());
         }
