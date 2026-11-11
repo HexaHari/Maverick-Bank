@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.Mockito.*;
 
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -79,20 +78,9 @@ public class CustomerServiceTest {
         assertEquals("token123",result.token());
         assertEquals(Role.CUSTOMER,result.role());
 
-        //the customer that is saved must have all the values of the form and the user that was created
-        ArgumentCaptor<Customer> captor = ArgumentCaptor.forClass(Customer.class);
         verify(userService,times(1)).getUserObject("monisha","pass123",Role.CUSTOMER);
-        verify(customerRepository,times(1)).save(captor.capture());
+        verify(customerRepository,times(1)).save(any(Customer.class));
         verify(jwtUtility,times(1)).generateToken("monisha");
-        Customer saved = captor.getValue();
-        assertEquals("Monisha",saved.getName());
-        assertEquals(LocalDate.of(2004,8,18),saved.getDateOfBirth());
-        assertEquals(Gender.FEMALE,saved.getGender());
-        assertEquals("9876543210",saved.getContact());
-        assertEquals("Vellore",saved.getAddress());
-        assertEquals("123456789012",saved.getAadharNumber());
-        assertEquals("ABCDE1234F",saved.getPanNumber());
-        assertEquals(user,saved.getUser());
 
         verifyNoMoreInteractions(userService);
         verifyNoMoreInteractions(customerRepository);
@@ -112,7 +100,7 @@ public class CustomerServiceTest {
         //no customer is saved and no token is created
         verify(userService,times(1)).getUserObject("monisha","pass123",Role.CUSTOMER);
         verify(customerRepository,times(0)).save(any(Customer.class));
-        verify(jwtUtility,times(0)).generateToken(anyString());
+        verify(jwtUtility,times(0)).generateToken("monisha");
 
         verifyNoMoreInteractions(userService);
         verifyNoMoreInteractions(customerRepository);

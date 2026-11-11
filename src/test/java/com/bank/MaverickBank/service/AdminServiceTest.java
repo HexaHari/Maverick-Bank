@@ -70,14 +70,6 @@ public class AdminServiceTest {
         return user;
     }
 
-    private void verifyNoMoreInteractionsOnAll(){
-        verifyNoMoreInteractions(employeeRepository);
-        verifyNoMoreInteractions(accountRepository);
-        verifyNoMoreInteractions(branchRepository);
-        verifyNoMoreInteractions(userRepository);
-        verifyNoMoreInteractions(passwordEncoder);
-        verifyNoMoreInteractions(principal);
-    }
 
     @Test
     public void updateEmployeeTest(){
@@ -108,7 +100,12 @@ public class AdminServiceTest {
         verify(employeeRepository,times(1)).existsByUserIdAndIdNot(3L,1L);
         verify(employeeRepository,times(1)).save(employee);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -130,7 +127,12 @@ public class AdminServiceTest {
         verify(employeeRepository,times(1)).findById(1L);
         verify(employeeRepository,times(1)).save(employee);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -146,7 +148,12 @@ public class AdminServiceTest {
         verify(employeeRepository,times(1)).findById(5L);
         verify(employeeRepository,times(0)).save(any(Employee.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -163,7 +170,12 @@ public class AdminServiceTest {
         verify(employeeRepository,times(1)).existsByContactAndIdNot("9876543210",1L);
         verify(employeeRepository,times(0)).save(any(Employee.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -182,7 +194,12 @@ public class AdminServiceTest {
         verify(branchRepository,times(1)).findById(9L);
         verify(employeeRepository,times(0)).save(any(Employee.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -201,7 +218,12 @@ public class AdminServiceTest {
         verify(userRepository,times(1)).findById(3L);
         verify(employeeRepository,times(0)).save(any(Employee.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -221,7 +243,12 @@ public class AdminServiceTest {
         verify(employeeRepository,times(1)).existsByUserIdAndIdNot(3L,1L);
         verify(employeeRepository,times(0)).save(any(Employee.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -244,7 +271,12 @@ public class AdminServiceTest {
         verify(passwordEncoder,times(1)).encode("newPass");
         verify(userRepository,times(1)).save(user);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -259,7 +291,12 @@ public class AdminServiceTest {
         verify(userRepository,times(1)).findById(9L);
         verify(userRepository,times(0)).save(any(User.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -277,7 +314,12 @@ public class AdminServiceTest {
         verify(principal,times(1)).getName();
         verify(userRepository,times(0)).save(any(User.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -296,7 +338,12 @@ public class AdminServiceTest {
         verify(principal,times(1)).getName();
         verify(userRepository,times(0)).save(any(User.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -311,7 +358,12 @@ public class AdminServiceTest {
 
         verify(employeeRepository,times(1)).getEmployeeBranchStats();
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -325,7 +377,12 @@ public class AdminServiceTest {
 
         verify(employeeRepository,times(1)).getEmployeeBranchStats();
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -340,7 +397,12 @@ public class AdminServiceTest {
 
         verify(accountRepository,times(1)).getAccountBranchStats();
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -358,7 +420,12 @@ public class AdminServiceTest {
         verify(principal,times(1)).getName();
         verify(userRepository,times(1)).save(user);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -372,7 +439,12 @@ public class AdminServiceTest {
         verify(userRepository,times(1)).findById(9L);
         verify(userRepository,times(0)).save(any(User.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -391,7 +463,12 @@ public class AdminServiceTest {
         verify(principal,times(1)).getName();
         verify(userRepository,times(0)).save(any(User.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -415,7 +492,12 @@ public class AdminServiceTest {
         verify(userRepository,times(1))
                 .dynamicFilterUser(null,"ra",Role.EMPLOYEE,true,createdFrom,createdTill,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -424,6 +506,11 @@ public class AdminServiceTest {
         assertThrows(IllegalArgumentException.class,
                 ()->adminService.dynamicFilterUser(null,null,null,null,null,null,-1,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 }

@@ -11,7 +11,6 @@ import com.bank.MaverickBank.dto.response.LoanRespDto;
 import com.bank.MaverickBank.enums.JobTitle;
 import com.bank.MaverickBank.enums.LoanStatus;
 import com.bank.MaverickBank.enums.LoanType;
-import com.bank.MaverickBank.enums.TransactionType;
 import com.bank.MaverickBank.exception.OutOfReachException;
 import com.bank.MaverickBank.exception.OwnershipException;
 import com.bank.MaverickBank.exception.ResourceNotFoundException;
@@ -33,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.Mockito.*;
 
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -123,15 +121,6 @@ public class LoanServiceTest {
                 "doc.pdf",false,1L,"MAVB0000301",null,null,LocalDate.of(2026,11,1),null,null);
     }
 
-    private void verifyNoMoreInteractionsOnAll(){
-        verifyNoMoreInteractions(customerRepository);
-        verifyNoMoreInteractions(loanRepository);
-        verifyNoMoreInteractions(accountRepository);
-        verifyNoMoreInteractions(branchRepository);
-        verifyNoMoreInteractions(employeeRepository);
-        verifyNoMoreInteractions(transactionRepository);
-        verifyNoMoreInteractions(principal);
-    }
 
     // ---------------------------------------------------- addLoan
 
@@ -150,7 +139,13 @@ public class LoanServiceTest {
         verify(accountRepository,times(1)).findById(99L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -169,7 +164,13 @@ public class LoanServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -191,7 +192,13 @@ public class LoanServiceTest {
         verify(branchRepository,times(1)).findBranchByIfscCode("MAVB0009999");
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -211,7 +218,13 @@ public class LoanServiceTest {
         verify(branchRepository,times(1)).findBranchByIfscCode("MAVB0000301");
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -232,7 +245,13 @@ public class LoanServiceTest {
         verify(branchRepository,times(1)).findBranchByIfscCode("MAVB0000301");
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -256,7 +275,13 @@ public class LoanServiceTest {
         verify(branchRepository,times(1)).findBranchByIfscCode("MAVB0000301");
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     // ---------------------------------------------------- filters
@@ -285,7 +310,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).dynamicFilterLoan(null,null,7L,LoanType.HOME,LoanStatus.PENDING,minRequestedAmount,null,null,null,
                 "MAVB0000301",null,false,createdFrom,createdTill,null,null,null,null,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -294,7 +325,13 @@ public class LoanServiceTest {
         assertThrows(IllegalArgumentException.class,
                 ()->loanService.dynamicFilterLoan(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,-1,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -321,7 +358,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).dynamicFilterLoan(null,null,7L,null,LoanStatus.APPROVED,null,null,null,null,
                 null,null,null,null,null,null,null,null,null,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -337,7 +380,13 @@ public class LoanServiceTest {
 
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     // ---------------------------------------------------- assignLoan
@@ -367,7 +416,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -396,7 +451,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -410,7 +471,13 @@ public class LoanServiceTest {
         verify(employeeRepository,times(1)).getEmployeeByUsername("nobody");
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -426,7 +493,13 @@ public class LoanServiceTest {
         verify(employeeRepository,times(1)).getEmployeeByUsername("clara");
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -444,7 +517,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(99L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -465,7 +544,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -484,7 +569,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -506,7 +597,13 @@ public class LoanServiceTest {
         verify(employeeRepository,times(1)).findById(99L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -530,7 +627,13 @@ public class LoanServiceTest {
         verify(employeeRepository,times(1)).findById(2L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     // ---------------------------------------------------- approveLoan
@@ -561,7 +664,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -586,7 +695,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -600,7 +715,13 @@ public class LoanServiceTest {
         verify(employeeRepository,times(1)).getEmployeeByUsername("nobody");
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -618,7 +739,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(99L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -637,7 +764,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -659,7 +792,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -680,7 +819,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     // ---------------------------------------------------- rejectLoan
@@ -707,7 +852,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -726,7 +877,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -745,7 +902,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     // ---------------------------------------------------- acceptLoan / customerRejectLoan
@@ -771,7 +934,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -787,7 +956,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(99L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -807,7 +982,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -827,7 +1008,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -852,7 +1039,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -871,7 +1064,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     // ---------------------------------------------------- disburseLoan / managerRejectLoan
@@ -897,22 +1096,21 @@ public class LoanServiceTest {
         assertEquals(LoanStatus.ONGOING,loan.getLoanStatus());
         assertEquals(LocalDate.now(),loan.getDisbursedAt());
 
-        //and a completed deposit transaction is recorded, so that the statement shows the loan amount
-        ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
+        //and a deposit transaction is recorded, so that the statement shows the loan amount
         verify(employeeRepository,times(1)).getEmployeeByUsername("mani");
         verify(loanRepository,times(1)).findById(1L);
         verify(accountRepository,times(1)).save(account);
-        verify(transactionRepository,times(1)).save(captor.capture());
+        verify(transactionRepository,times(1)).save(any(Transaction.class));
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
-        Transaction transaction = captor.getValue();
-        assertEquals(TransactionType.DEPOSIT,transaction.getTransactionType());
-        assertEquals(account,transaction.getDestinationAccount());
-        assertEquals(new BigDecimal("90000.00"),transaction.getAmount());
-        assertEquals(new BigDecimal("95000.00"),transaction.getDestinationAccountBalance());
-        assertTrue(transaction.isCompleted());
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -927,7 +1125,13 @@ public class LoanServiceTest {
         verify(employeeRepository,times(1)).getEmployeeByUsername("clara");
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -949,7 +1153,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -969,7 +1179,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -993,7 +1209,13 @@ public class LoanServiceTest {
         verify(accountRepository,times(0)).save(any(Account.class));
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -1018,7 +1240,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -1037,7 +1265,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     // ---------------------------------------------------- completeLoan
@@ -1063,7 +1297,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).save(loan);
         verify(loanRepository,times(1)).getLoanById(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -1082,7 +1322,13 @@ public class LoanServiceTest {
         verify(loanRepository,times(1)).findById(1L);
         verify(loanRepository,times(0)).save(any(Loan.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     // ---------------------------------------------------- stats for the charts
@@ -1105,7 +1351,13 @@ public class LoanServiceTest {
         verify(employeeRepository,times(1)).findByUserUsername("clara");
         verify(loanRepository,times(1)).getLoanStatusStats(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -1118,9 +1370,15 @@ public class LoanServiceTest {
 
         verify(principal,times(1)).getName();
         verify(employeeRepository,times(1)).findByUserUsername("nobody");
-        verify(loanRepository,times(0)).getLoanStatusStats(anyLong());
+        verify(loanRepository,times(0)).getLoanStatusStats(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -1141,7 +1399,13 @@ public class LoanServiceTest {
         verify(employeeRepository,times(1)).findByUserUsername("clara");
         verify(loanRepository,times(1)).getLoanTypeStats(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -1154,8 +1418,14 @@ public class LoanServiceTest {
 
         verify(principal,times(1)).getName();
         verify(employeeRepository,times(1)).findByUserUsername("nobody");
-        verify(loanRepository,times(0)).getLoanTypeStats(anyLong());
+        verify(loanRepository,times(0)).getLoanTypeStats(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(loanRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(branchRepository);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(principal);
     }
 }

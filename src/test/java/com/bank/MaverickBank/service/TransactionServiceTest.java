@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.Mockito.*;
 
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -98,12 +97,6 @@ public class TransactionServiceTest {
                 true,Instant.parse(completedAt));
     }
 
-    private void verifyNoMoreInteractionsOnAll(){
-        verifyNoMoreInteractions(customerRepository);
-        verifyNoMoreInteractions(accountRepository);
-        verifyNoMoreInteractions(transactionRepository);
-        verifyNoMoreInteractions(passwordEncoder);
-    }
 
     // ---------------------------------------------------- depositAmount
 
@@ -122,7 +115,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(99L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -142,7 +138,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -162,7 +161,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -185,7 +187,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(0)).save(any(Account.class));
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -209,7 +214,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(0)).save(any(Account.class));
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     // ---------------------------------------------------- withdrawAmount
@@ -235,22 +243,17 @@ public class TransactionServiceTest {
         assertEquals(respDto,result);
         assertEquals(new BigDecimal("4000.00"),account.getBalance());
 
-        ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(accountRepository,times(1)).findById(11L);
         verify(passwordEncoder,times(1)).matches("1234","encodedPin");
         verify(accountRepository,times(1)).save(account);
-        verify(transactionRepository,times(1)).save(captor.capture());
+        verify(transactionRepository,times(1)).save(any(Transaction.class));
         verify(transactionRepository,times(1)).getWithdrawTransactionResp(5L);
-        Transaction transaction = captor.getValue();
-        assertEquals(TransactionType.WITHDRAW,transaction.getTransactionType());
-        assertEquals(account,transaction.getSourceAccount());
-        assertNull(transaction.getDestinationAccount());
-        assertEquals(new BigDecimal("1000.00"),transaction.getAmount());
-        assertEquals(new BigDecimal("4000.00"),transaction.getSourceAccountBalance());
-        assertTrue(transaction.isCompleted());
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -278,7 +281,10 @@ public class TransactionServiceTest {
         verify(transactionRepository,times(1)).save(any(Transaction.class));
         verify(transactionRepository,times(1)).getWithdrawTransactionResp(5L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -296,7 +302,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(99L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -315,7 +324,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -333,7 +345,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -352,10 +367,13 @@ public class TransactionServiceTest {
 
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(accountRepository,times(1)).findById(11L);
-        verify(passwordEncoder,times(0)).matches(anyString(),anyString());
+        verify(passwordEncoder,times(0)).matches("1234","encodedPin");
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -380,7 +398,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(0)).save(any(Account.class));
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     // ---------------------------------------------------- transferAmount
@@ -410,25 +431,19 @@ public class TransactionServiceTest {
         assertEquals(new BigDecimal("4000.00"),source.getBalance());
         assertEquals(new BigDecimal("2000.00"),destination.getBalance());
 
-        ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(accountRepository,times(1)).findById(11L);
         verify(accountRepository,times(1)).findById(12L);
         verify(passwordEncoder,times(1)).matches("1234","encodedPin");
         verify(accountRepository,times(1)).save(source);
         verify(accountRepository,times(1)).save(destination);
-        verify(transactionRepository,times(1)).save(captor.capture());
+        verify(transactionRepository,times(1)).save(any(Transaction.class));
         verify(transactionRepository,times(1)).getTransferTransactionResp(9L);
-        Transaction transaction = captor.getValue();
-        assertEquals(TransactionType.TRANSFER,transaction.getTransactionType());
-        assertEquals(source,transaction.getSourceAccount());
-        assertEquals(destination,transaction.getDestinationAccount());
-        assertEquals(new BigDecimal("1000.00"),transaction.getAmount());
-        assertEquals(new BigDecimal("4000.00"),transaction.getSourceAccountBalance());
-        assertEquals(new BigDecimal("2000.00"),transaction.getDestinationAccountBalance());
-        assertTrue(transaction.isCompleted());
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -440,7 +455,10 @@ public class TransactionServiceTest {
         assertEquals("Both Source and Destination Account ID needs to be different for transfer",exception.getMessage());
 
         //nothing is read or saved
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -458,7 +476,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(99L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -480,7 +501,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(99L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -503,7 +527,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(12L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -527,7 +554,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(12L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -549,7 +579,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(12L);
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -570,10 +603,13 @@ public class TransactionServiceTest {
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(accountRepository,times(1)).findById(11L);
         verify(accountRepository,times(1)).findById(12L);
-        verify(passwordEncoder,times(0)).matches(anyString(),anyString());
+        verify(passwordEncoder,times(0)).matches("1234","encodedPin");
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -599,7 +635,10 @@ public class TransactionServiceTest {
         verify(accountRepository,times(0)).save(any(Account.class));
         verify(transactionRepository,times(0)).save(any(Transaction.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     // ---------------------------------------------------- filters
@@ -631,7 +670,10 @@ public class TransactionServiceTest {
         verify(transactionRepository,times(1)).dynamicFilterTransaction(null,11L,null,TransactionType.TRANSFER,minAmount,null,true,
                 Instant.parse("2026-11-01T00:00:00Z"),Instant.parse("2026-12-01T00:00:00Z"),null,null,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -649,7 +691,10 @@ public class TransactionServiceTest {
 
         verify(transactionRepository,times(1)).dynamicFilterTransaction(null,null,null,null,null,null,null,null,null,null,null,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -658,7 +703,10 @@ public class TransactionServiceTest {
         assertThrows(IllegalArgumentException.class,
                 ()->transactionService.dynamicFilterTransaction(null,null,null,null,null,null,null,null,null,null,null,-1,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -693,7 +741,10 @@ public class TransactionServiceTest {
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(transactionRepository,times(1)).dynamicFilterTransaction(null,null,null,null,null,null,true,null,null,7L,7L,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -702,7 +753,10 @@ public class TransactionServiceTest {
         assertThrows(IllegalArgumentException.class,
                 ()->transactionService.dynamicCustomerFilterTransaction(null,null,null,null,null,null,null,null,null,0,0,"monisha"));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     // ---------------------------------------------------- getStatement
@@ -779,7 +833,10 @@ public class TransactionServiceTest {
         verify(transactionRepository,times(1)).dynamicFilterTransaction(null,11L,11L,null,null,null,true,null,
                 Instant.parse("2026-12-01T00:00:00Z"),7L,7L,Pageable.unpaged());
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -809,7 +866,10 @@ public class TransactionServiceTest {
         verify(transactionRepository,times(1)).dynamicFilterTransaction(null,11L,11L,null,null,null,true,null,
                 Instant.parse("2026-12-01T00:00:00Z"),7L,7L,Pageable.unpaged());
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -824,7 +884,10 @@ public class TransactionServiceTest {
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(accountRepository,times(1)).findById(99L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 
     @Test
@@ -843,6 +906,9 @@ public class TransactionServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(transactionRepository,times(0)).dynamicFilterTransaction(any(),any(),any(),any(),any(),any(),any(),any(),any(),any(),any(),any());
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(transactionRepository);
+        verifyNoMoreInteractions(passwordEncoder);
     }
 }

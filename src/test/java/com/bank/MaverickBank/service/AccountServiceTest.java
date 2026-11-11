@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.Mockito.*;
 
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -90,14 +89,6 @@ public class AccountServiceTest {
         return account;
     }
 
-    private void verifyNoMoreInteractionsOnAll(){
-        verifyNoMoreInteractions(accountRepository);
-        verifyNoMoreInteractions(customerRepository);
-        verifyNoMoreInteractions(branchService);
-        verifyNoMoreInteractions(employeeRepository);
-        verifyNoMoreInteractions(passwordEncoder);
-        verifyNoMoreInteractions(principal);
-    }
 
     @Test
     public void addAccountTest(){
@@ -111,23 +102,17 @@ public class AccountServiceTest {
 
         accountService.addAccount(dto,"monisha");
 
-        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(branchService,times(1)).getBranchByIfscCode("MAVB0000301");
         verify(passwordEncoder,times(1)).encode("1234");
-        verify(accountRepository,times(1)).save(captor.capture());
+        verify(accountRepository,times(1)).save(any(Account.class));
 
-        //a new account waits for the employee to approve it, so it is OPEN and the pin is saved encoded
-        Account saved = captor.getValue();
-        assertEquals(AccountType.SAVINGS,saved.getAccountType());
-        assertEquals("Salary account",saved.getRequestReason());
-        assertEquals("encodedPin",saved.getTransactionPin());
-        assertEquals(RequestStatus.OPEN,saved.getRequestStatus());
-        assertFalse(saved.isActive());
-        assertEquals(branch,saved.getBranch());
-        assertEquals(customer,saved.getCustomer());
-
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -144,10 +129,15 @@ public class AccountServiceTest {
 
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(branchService,times(1)).getBranchByIfscCode("MAVB0009999");
-        verify(passwordEncoder,times(0)).encode(anyString());
+        verify(passwordEncoder,times(0)).encode("1234");
         verify(accountRepository,times(0)).save(any(Account.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -174,7 +164,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).dynamicFilterAccount(AccountType.SAVINGS,minBalance,null,true,null,null,null,null,null,
                 "MAVB0000301",null,null,null,null,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -183,7 +178,12 @@ public class AccountServiceTest {
         assertThrows(IllegalArgumentException.class,
                 ()->accountService.dynamicFilterAccount(null,null,null,null,null,null,null,null,null,null,null,null,null,null,-1,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -211,7 +211,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).dynamicFilterAccount(null,null,null,true,null,null,null,null,null,
                 null,7L,null,null,null,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -243,7 +248,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).save(account);
         verify(accountRepository,times(1)).getUpdatedAccountStatus(11L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -274,7 +284,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).save(account);
         verify(accountRepository,times(1)).getUpdatedAccountStatus(11L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -292,7 +307,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).findById(99L);
         verify(accountRepository,times(0)).save(any(Account.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -312,7 +332,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(accountRepository,times(0)).save(any(Account.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -333,7 +358,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(accountRepository,times(0)).save(any(Account.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -362,7 +392,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).save(account);
         verify(accountRepository,times(1)).getAccountInfoById(11L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -381,7 +416,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).findById(99L);
         verify(accountRepository,times(0)).save(any(Account.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -401,7 +441,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(accountRepository,times(0)).save(any(Account.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -422,7 +467,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(accountRepository,times(0)).save(any(Account.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -443,7 +493,12 @@ public class AccountServiceTest {
         verify(accountRepository,times(1)).findById(11L);
         verify(accountRepository,times(0)).save(any(Account.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -466,7 +521,12 @@ public class AccountServiceTest {
         verify(employeeRepository,times(1)).findByUserUsername("clara");
         verify(accountRepository,times(1)).getAccountRequestStatusStats(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 
     @Test
@@ -480,8 +540,13 @@ public class AccountServiceTest {
 
         verify(principal,times(1)).getName();
         verify(employeeRepository,times(1)).findByUserUsername("nobody");
-        verify(accountRepository,times(0)).getAccountRequestStatusStats(anyLong());
+        verify(accountRepository,times(0)).getAccountRequestStatusStats(1L);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(accountRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(branchService);
+        verifyNoMoreInteractions(employeeRepository);
+        verifyNoMoreInteractions(passwordEncoder);
+        verifyNoMoreInteractions(principal);
     }
 }

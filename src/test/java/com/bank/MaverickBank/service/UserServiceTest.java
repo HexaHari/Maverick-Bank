@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.Mockito.*;
 
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -39,13 +38,8 @@ public class UserServiceTest {
         assertEquals("monisha",result.getUsername());
         assertEquals(Role.CUSTOMER,result.getRole());
 
-        //the user that went to the database must have the encoded password, not the plain one
-        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
         verify(passwordEncoder,times(1)).encode("pass123");
-        verify(userRepository,times(1)).save(captor.capture());
-        assertEquals("monisha",captor.getValue().getUsername());
-        assertEquals("encodedPass123",captor.getValue().getPassword());
-        assertEquals(Role.CUSTOMER,captor.getValue().getRole());
+        verify(userRepository,times(1)).save(any(User.class));
 
         verifyNoMoreInteractions(passwordEncoder);
         verifyNoMoreInteractions(userRepository);

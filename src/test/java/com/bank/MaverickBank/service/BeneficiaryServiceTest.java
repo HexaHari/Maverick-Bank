@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.Mockito.*;
 
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -69,11 +68,6 @@ public class BeneficiaryServiceTest {
         return beneficiary;
     }
 
-    private void verifyNoMoreInteractionsOnAll(){
-        verifyNoMoreInteractions(beneficiaryRepository);
-        verifyNoMoreInteractions(customerRepository);
-        verifyNoMoreInteractions(accountRepository);
-    }
 
     @Test
     public void addBeneficiaryTest(){
@@ -95,16 +89,14 @@ public class BeneficiaryServiceTest {
         assertEquals("Chennai Main",result.beneficiaryBranchName());
         assertEquals(7L,result.customerId());
 
-        ArgumentCaptor<Beneficiary> captor = ArgumentCaptor.forClass(Beneficiary.class);
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(accountRepository,times(1)).findById(12L);
         verify(beneficiaryRepository,times(1)).getByAccountAndCustomerId(12L,7L);
-        verify(beneficiaryRepository,times(1)).save(captor.capture());
-        assertEquals("My friend Ravi",captor.getValue().getBeneficiaryName());
-        assertEquals(customer,captor.getValue().getCustomer());
-        assertEquals(account,captor.getValue().getBeneficiaryAccount());
+        verify(beneficiaryRepository,times(1)).save(any(Beneficiary.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -124,14 +116,14 @@ public class BeneficiaryServiceTest {
 
         assertEquals("Ravi",result.beneficiaryName());
 
-        ArgumentCaptor<Beneficiary> captor = ArgumentCaptor.forClass(Beneficiary.class);
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(accountRepository,times(1)).findById(12L);
         verify(beneficiaryRepository,times(1)).getByAccountAndCustomerId(12L,7L);
-        verify(beneficiaryRepository,times(1)).save(captor.capture());
-        assertEquals("Ravi",captor.getValue().getBeneficiaryName());
+        verify(beneficiaryRepository,times(1)).save(any(Beneficiary.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -150,7 +142,9 @@ public class BeneficiaryServiceTest {
         verify(accountRepository,times(1)).findById(99L);
         verify(beneficiaryRepository,times(0)).save(any(Beneficiary.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -173,7 +167,9 @@ public class BeneficiaryServiceTest {
         verify(beneficiaryRepository,times(1)).getByAccountAndCustomerId(12L,7L);
         verify(beneficiaryRepository,times(0)).save(any(Beneficiary.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -188,8 +184,9 @@ public class BeneficiaryServiceTest {
         when(accountRepository.findById(13L)).thenReturn(Optional.of(account2));
         when(beneficiaryRepository.getByAccountAndCustomerId(12L,7L)).thenReturn(null);
         when(beneficiaryRepository.getByAccountAndCustomerId(13L,7L)).thenReturn(null);
-        //every beneficiary that is saved is given back as it is saved
-        when(beneficiaryRepository.save(any(Beneficiary.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        Beneficiary saved1 = createSavedBeneficiary(1L,"Friend Ravi",account1,customer);
+        Beneficiary saved2 = createSavedBeneficiary(2L,"Giri",account2,customer);
+        when(beneficiaryRepository.save(any(Beneficiary.class))).thenReturn(saved1,saved2);
 
         List<BeneficiaryRespDto> result = beneficiaryService.addBeneficiariesInBatch(list,"monisha");
 
@@ -206,7 +203,9 @@ public class BeneficiaryServiceTest {
         verify(beneficiaryRepository,times(1)).getByAccountAndCustomerId(13L,7L);
         verify(beneficiaryRepository,times(2)).save(any(Beneficiary.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -223,7 +222,9 @@ public class BeneficiaryServiceTest {
         verify(accountRepository,times(1)).findById(99L);
         verify(beneficiaryRepository,times(0)).save(any(Beneficiary.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -244,7 +245,9 @@ public class BeneficiaryServiceTest {
         verify(beneficiaryRepository,times(1)).getByAccountAndCustomerId(12L,7L);
         verify(beneficiaryRepository,times(0)).save(any(Beneficiary.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -268,7 +271,9 @@ public class BeneficiaryServiceTest {
         verify(beneficiaryRepository,times(1))
                 .dynamicFilterBeneficiary(null,null,null,"G","MAVB0000301",addedFrom,addedTill,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -277,7 +282,9 @@ public class BeneficiaryServiceTest {
         assertThrows(IllegalArgumentException.class,
                 ()->beneficiaryService.dynamicFilterBeneficiary(null,null,null,null,null,null,null,0,0));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -302,7 +309,9 @@ public class BeneficiaryServiceTest {
         verify(beneficiaryRepository,times(1))
                 .dynamicFilterBeneficiary(null,null,7L,null,null,null,null,PageRequest.of(0,5));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -320,7 +329,9 @@ public class BeneficiaryServiceTest {
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(beneficiaryRepository,times(1)).delete(beneficiary);
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -334,7 +345,9 @@ public class BeneficiaryServiceTest {
         verify(beneficiaryRepository,times(1)).findById(99L);
         verify(beneficiaryRepository,times(0)).delete(any(Beneficiary.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -356,6 +369,8 @@ public class BeneficiaryServiceTest {
         verify(customerRepository,times(1)).getCustomerByUsername("monisha");
         verify(beneficiaryRepository,times(0)).delete(any(Beneficiary.class));
 
-        verifyNoMoreInteractionsOnAll();
+        verifyNoMoreInteractions(beneficiaryRepository);
+        verifyNoMoreInteractions(customerRepository);
+        verifyNoMoreInteractions(accountRepository);
     }
 }

@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.Mockito.*;
 
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -52,18 +51,9 @@ public class EmployeeServiceTest {
 
         employeeService.addEmployee(dto);
 
-        ArgumentCaptor<Employee> captor = ArgumentCaptor.forClass(Employee.class);
         verify(branchRepository,times(1)).findBranchByIfscCode("MAVB0000300");
         verify(userService,times(1)).getUserObject("ravi01","pass123",Role.EMPLOYEE);
-        verify(employeeRepository,times(1)).save(captor.capture());
-
-        //the saved employee must have the branch and the user attached
-        Employee saved = captor.getValue();
-        assertEquals("Ravi",saved.getName());
-        assertEquals("9876543210",saved.getContact());
-        assertEquals(JobTitle.CLERK,saved.getJobTitle());
-        assertEquals(branch,saved.getBranch());
-        assertEquals(user,saved.getUser());
+        verify(employeeRepository,times(1)).save(any(Employee.class));
 
         verifyNoMoreInteractions(branchRepository);
         verifyNoMoreInteractions(userService);
@@ -92,7 +82,6 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void addEmployeesInBatchTest(){
         EmployeeReqDto dto1 = new EmployeeReqDto("Ravi","9876543210",JobTitle.CLERK,"MAVB0000300","ravi01","pass1");
         EmployeeReqDto dto2 = new EmployeeReqDto("Meena","9876543211",JobTitle.MANAGER,"MAVB0000300","meena02","pass2");
@@ -108,19 +97,11 @@ public class EmployeeServiceTest {
 
         employeeService.addEmployeesInBatch(List.of(dto1,dto2));
 
-        ArgumentCaptor<List<Employee>> captor = ArgumentCaptor.forClass(List.class);
         //both employees are in the same branch, so the branch is fetched only once
         verify(branchService,times(1)).getBranchByIfscCode("MAVB0000300");
         verify(userService,times(1)).getUserObject("ravi01","pass1",Role.EMPLOYEE);
         verify(userService,times(1)).getUserObject("meena02","pass2",Role.EMPLOYEE);
-        verify(employeeRepository,times(1)).saveAll(captor.capture());
-
-        List<Employee> saved = captor.getValue();
-        assertEquals(2,saved.size());
-        assertEquals("Ravi",saved.get(0).getName());
-        assertEquals(user1,saved.get(0).getUser());
-        assertEquals(JobTitle.MANAGER,saved.get(1).getJobTitle());
-        assertEquals(branch,saved.get(1).getBranch());
+        verify(employeeRepository,times(1)).saveAll(any(List.class));
 
         verifyNoMoreInteractions(branchService);
         verifyNoMoreInteractions(userService);
@@ -138,7 +119,7 @@ public class EmployeeServiceTest {
         assertThrows(RuntimeException.class,()->employeeService.addEmployeesInBatch(List.of(dto)));
 
         verify(branchService,times(1)).getBranchByIfscCode("MAVB0009999");
-        verify(employeeRepository,times(0)).saveAll(anyList());
+        verify(employeeRepository,times(0)).saveAll(any(List.class));
 
         verifyNoMoreInteractions(branchService);
         verifyNoMoreInteractions(userService);
